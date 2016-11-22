@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Zapnologica.ExponentialBackoff
+namespace Zapnologica.Utils.ExponentialBackoff
 {
     /// <summary>
     /// Class used to do exponential back off timing for threads, Implements a floor and a roof 
@@ -32,11 +32,16 @@ namespace Zapnologica.ExponentialBackoff
         /// </summary>
         /// <param name="min">the minimum time that the thread should block for in milliseconds. Bigger than ZERO</param>
         /// <param name="max">the maximum time that the thread should block for in milliseconds</param>
-        public ExponentialBackoff(int min, int max)
+        /// <param name="exponent">the exponent to apply to the waiting. Default is 2</param>
+        public ExponentialBackoff(int min, int max, int exponent = 2)
         {
+            if (min < 1)
+            {
+                throw new ArgumentOutOfRangeException(@"min time has to be bigger than zero.");
+            }
             _minInterval = min;
             _interval = _minInterval;
-            _exponent = 2;
+            _exponent = exponent;
             _maxInterval = max;
         }
 
@@ -58,7 +63,7 @@ namespace Zapnologica.ExponentialBackoff
             Thread.Sleep(TimeSpan.FromMilliseconds(_interval));
             _interval = GetInterval();
         }
-        
+
         /// <summary>
         /// Call this to wait async for a calculated period of time
         /// </summary>
