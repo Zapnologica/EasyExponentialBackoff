@@ -3,25 +3,26 @@ Easy Exponential Back-off Utils for C# threading enviroment
 
 Use Case:
 
- private void Main()
+     private void Main()
         {
             try
             {
                 Log.Debug("Starting Worker Thread");
-             
+                
                 // Exponential Back-off 
                 var eb = new ExponentialBackoff();
+                
+                // run for duration of applicaion
                 while (_run)
                 {
                     try
                     {
-                        //Fetch Latest Item
-                        QueueRetryHolder<byte[]> input;
-                        if (IncomingQueue.TryDequeue(out input))
+                        // Fetch work item
+                        var item = GetWorkItemFromSomeWhere();                        
+                        if (item != null)
                         {
-                            //Handle the logItem
-                            ProcessItem(input, handler);
-                            Interlocked.Increment(ref ProcessedInLastSec);
+                            //Handle the work item
+                            // TODO: Do work on item                            
                             //Reset the exponential back off counter
                             eb.reset();
                         }
