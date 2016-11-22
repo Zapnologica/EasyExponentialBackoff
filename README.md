@@ -1,5 +1,9 @@
 # EasyExponentialBackoff
-Easy Exponential Back-off Utils for C# threading enviroment
+Easy Exponential Back-off Util for C# threading enviroment
+
+Implementes the exponential backoff algorythim.
+
+Generally used when a thread is polling for a certain outcome.
 
 Use Case:
 
